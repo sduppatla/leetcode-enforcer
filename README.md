@@ -1,2 +1,2 @@
 # leetcode-kicker
-Harasses users that have not done one leetcode a day
+Discord bot that harasses users that have not done one leetcode a day
