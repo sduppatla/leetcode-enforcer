@@ -22,9 +22,8 @@ class LeetcodeSubmissionRetriever:
         }} 
         """
 
-
-
-    def retrieve(self, user):
+    # lsr.should_enforce("sduppatla")
+    def should_enforce(self, user):
         body = self.body.format(user)
         response = requests.post(url=self.url, json={"query": body})
         if response.status_code != 200:
@@ -39,8 +38,8 @@ class LeetcodeSubmissionRetriever:
         current_ts = float(time.time())
         time_since_last_submission_secs = int(current_ts - latest_submission_ts)
         if time_since_last_submission_secs > self.max_submission_gap_secs:
-            print(f"User must be removed, latest submission was over {time_since_last_submission_secs // 86400} days ago") 
+            print(f"User must be removed, latest submission was over {time_since_last_submission_secs // 86400} days ago")
+            return True
+        return False
 
 lsr = LeetcodeSubmissionRetriever()
-lsr.retrieve("sduppatla")
-lsr.retrieve("KniveHimself")
