@@ -6,7 +6,6 @@ class LeetcodeSubmissionRetriever:
     def __init__(self):
         # leetcode graphql url
         self.url = "https://leetcode.com/graphql"
-        self.max_submission_gap_secs = 86400 # 60 secs * 60 mins * 24 hrs 
 
         self.body = """
         {{     
@@ -22,7 +21,7 @@ class LeetcodeSubmissionRetriever:
         }} 
         """
 
-    def should_enforce(self, user):
+    def should_enforce(self, user, max_submission_gap_secs):
         body = self.body.format(user)
         response = requests.post(url=self.url, json={"query": body})
         if response.status_code != 200:
@@ -36,7 +35,7 @@ class LeetcodeSubmissionRetriever:
         latest_submission_ts = float(latest_submission["timestamp"])
         current_ts = float(time.time())
         time_since_last_submission_secs = int(current_ts - latest_submission_ts)
-        if time_since_last_submission_secs > self.max_submission_gap_secs:
+        if time_since_last_submission_secs > max_submission_gap_secs:
             print(f"User must be removed, latest submission was over {time_since_last_submission_secs // 86400} days ago")
             return True
         return False
