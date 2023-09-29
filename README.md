@@ -1,4 +1,4 @@
-# leetcode-kicker
+# leetcode-enforcer
 Discord bot that harasses users that have not done one leetcode a day
 
 Limit access to server when no leetcode done in the last 24 hours

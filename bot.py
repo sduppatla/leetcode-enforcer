@@ -33,11 +33,16 @@ async def on_ready():
 @bot.event
 async def on_voice_state_update(member, before, after):
     leetcode_username = users.get_leetcode_username_from_discord(member.id)
+    # If user is not registered with bot skip...
+    if not leetcode_username:
+        return
     # Mute user if joining voice channel and leetcode needs to be enforced
     if before.channel != after.channel and after.channel != None:
         if lsr.should_enforce(leetcode_username):
+            print(f"Muted member {member.name}")
             await member.edit(mute=True)
         else:
+            print(f"Unmuted member {member.name}")
             await member.edit(mute=False)
         
 @bot.slash_command(description="Register a user's discord id with their leetcode username")

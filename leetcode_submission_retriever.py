@@ -22,7 +22,6 @@ class LeetcodeSubmissionRetriever:
         }} 
         """
 
-    # lsr.should_enforce("sduppatla")
     def should_enforce(self, user):
         body = self.body.format(user)
         response = requests.post(url=self.url, json={"query": body})

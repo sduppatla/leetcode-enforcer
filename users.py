@@ -19,7 +19,7 @@ class UserStorage:
         self.execute(f"INSERT INTO users VALUES (\"{discord_username}\", \"{leetcode_username}\");")
 
     def get_leetcode_username_from_discord(self, discord_username):
-        return self.execute(f"SELECT leetcode_username FROM users WHERE discord_username=\"{discord_username}\"")
+        return self.fetchone(f"SELECT leetcode_username FROM users WHERE discord_username=\"{discord_username}\"")
 
     def create_server_connection(self, host_name, user_name, user_password):
         connection = None
@@ -35,7 +35,7 @@ class UserStorage:
 
         return connection
     
-    def execute(self, query):
+    def fetchone(self, query):
         cursor = self.connection.cursor()
         try:
             cursor.execute(query)
@@ -43,5 +43,13 @@ class UserStorage:
             print(f"Query executed successfully: {query}")
             if result:
                 return result[0]
+        except Error as err:
+            print(f"Error: '{err}'")
+
+    def execute(self, query):
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(query)
+            print(f"Query executed successfully: {query}")
         except Error as err:
             print(f"Error: '{err}'")
