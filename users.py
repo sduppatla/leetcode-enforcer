@@ -1,7 +1,5 @@
 import mysql.connector
 from mysql.connector import Error
-import pandas as pd
-import os
 
 # Stores users and their corresponding data
 class UserStorage:
@@ -19,7 +17,7 @@ class UserStorage:
         self.execute(f"INSERT INTO users VALUES (\"{discord_username}\", \"{leetcode_username}\");")
 
     def get_leetcode_username_from_discord(self, discord_username):
-        return self.fetchone(f"SELECT leetcode_username FROM users WHERE discord_username=\"{discord_username}\"")
+        return self.fetchone(f"SELECT DISTINCT leetcode_username FROM users WHERE discord_username=\"{discord_username}\";")
 
     def create_server_connection(self, host_name, user_name, user_password):
         connection = None
@@ -36,7 +34,7 @@ class UserStorage:
         return connection
     
     def fetchone(self, query):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(buffered=True)
         try:
             cursor.execute(query)
             result = cursor.fetchone()
