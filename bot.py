@@ -53,7 +53,11 @@ async def on_voice_state_update(member, before, after):
 async def enforce_leetcode(inter, discord_user: disnake.User, enforce_seconds: int = 86400):
     guild = disnake.utils.get(bot.guilds, name=GUILD)
     member = guild.get_member(discord_user.id)
-    role_ids = list(map(lambda role: role.id, filter(lambda role: role.name != "@everyone", member.roles)))
+    leetcode_channel = None
+    for channel in guild.channels:
+        if channel.name == "leetcode-violators":
+            leetcode_channel = channel
+    # leetcode_channel = guild.get_channel(db.leetcodechannelid) # Retrieve this from db metadata
     leetcode_username = users.get_leetcode_username_from_discord(member.id)
 
     if not leetcode_username:
@@ -64,13 +68,15 @@ async def enforce_leetcode(inter, discord_user: disnake.User, enforce_seconds: i
         # Remove all current roles and add leetcode enforcer role.
         leetcode_rid = users.get_leetcode_rid()
         await member.edit(roles=[guild.get_role(leetcode_rid)])
-        await inter.response.send_message(f"User {discord_user.name} is restricted until a new leetcode is submitted.")
+        if leetcode_channel:
+            await channel.send(f"Time for some leetcode {discord_user.mention}!")
+        await inter.response.send_message(f"User {discord_user.mention} is restricted until a new leetcode is submitted.")
     else:
         # Restore previous roles and remove leetcode enforcer role.
         rids = users.get_user_roles(discord_user.id)
         roles = list(map(lambda rid: guild.get_role(rid), rids))
         await member.edit(roles=roles)
-        await inter.response.send_message(f"User {discord_user.name} has done their leetcode and is now unrestricted :)")
+        await inter.response.send_message(f"User {discord_user.mention} has done their leetcode and is now unrestricted :)")
 
         
 @bot.slash_command(description="Register a user's discord id with their leetcode username")

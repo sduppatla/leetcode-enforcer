@@ -31,10 +31,14 @@ class LeetcodeSubmissionRetriever:
         submissions = submissions["data"]["recentSubmissionList"]
 
         # Assume that submissions are shorted with decreasing timestamps
+        if len(submissions) == 0:
+            print(f"User must be removed, no submissions found")
+            return True
         latest_submission = submissions[0]
         latest_submission_ts = float(latest_submission["timestamp"])
         current_ts = float(time.time())
         time_since_last_submission_secs = int(current_ts - latest_submission_ts)
+        print(f"user last submitted {time_since_last_submission_secs} seconds ago")
         if time_since_last_submission_secs > max_submission_gap_secs:
             print(f"User must be removed, latest submission was over {time_since_last_submission_secs // 86400} days ago")
             return True
