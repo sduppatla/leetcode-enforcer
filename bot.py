@@ -1,8 +1,8 @@
 # bot.py
 import os
 
-import discord
-from discord.ext import commands
+import disnake
+from disnake.ext import commands
 from dotenv import load_dotenv
 
 import leetcode_submission_retriever
@@ -14,7 +14,7 @@ GUILD = os.getenv('DISCORD_GUILD')
 lsr = leetcode_submission_retriever.LeetcodeSubmissionRetriever()
 leetcode_username = "sduppatla"
 
-intents = discord.Intents.default()
+intents = disnake.Intents.default()
 intents.members = True
 intents.message_content = True
 intents.voice_states = True
@@ -25,7 +25,7 @@ user_id = 513915310496153600
 
 @bot.event
 async def on_ready():
-    guild = discord.utils.get(bot.guilds, name=GUILD)
+    guild = disnake.utils.get(bot.guilds, name=GUILD)
     print(f'{bot.user} has connected to Discord guild {guild.name}!')
     
     members = '\n - '.join([member.name for member in guild.members])
