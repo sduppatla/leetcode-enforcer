@@ -1,0 +1,12 @@
+https://leetcode.com/graphql?query=query
+{     
+    recentSubmissionList(username: "sduppatla") 
+    {
+    title
+    titleSlug
+    timestamp
+    statusDisplay
+    lang
+    __typename
+    }
+} 
