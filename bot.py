@@ -41,11 +41,12 @@ async def on_voice_state_update(member, before, after):
         if lsr.should_enforce(leetcode_username):
             print(f"Muted member {member.name}")
             await member.edit(mute=True)
-        else:
+        elif after.mute:
             print(f"Unmuted member {member.name}")
             await member.edit(mute=False)
         
 @bot.slash_command(description="Register a user's discord id with their leetcode username")
+@commands.default_member_permissions(administrator=True)
 async def register(inter, discord_user: disnake.User, leetcode_username: str):
     print(f"Registering discord user: {discord_user.id} with leetcode username: {leetcode_username}")
     users.register_user(discord_user.id, leetcode_username)
